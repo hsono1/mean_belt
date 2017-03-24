@@ -1,0 +1,21 @@
+{
+  "name": "Mean_Belt",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Hans Sono <hans.sono23@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/hsono1/flaskLoginReg",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#^1.6.3",
+    "angular-route": "^1.6.3"
+  }
+}
