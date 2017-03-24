@@ -1,0 +1,52 @@
+<h2>Current Polls:</h2>
+
+<p style="color: blue; text-decoration: underline; cursor: pointer;" ng-click="goCreate()">Create a New Poll</p>
+<a href="">Logout</a> 
+
+<br>
+<br>
+
+
+
+<input type="text" placeholder="search" ng-model="search">
+
+<br>
+<br>
+
+
+<table>
+	
+	<thead>
+		
+		<th>Name</th>
+		<th>Survey Question</th>
+		<th>Date Posted</th>
+		<th>Action</th>
+	</thead>
+
+	<tbody>
+		
+		<tr ng-repeat="person in users | filter : search ">
+			
+			<td>{{person.first_name}}</td>
+			<td><a href="">{{person._poll.poll_question}}</a></td>
+			<td>{{person._poll.created_at}}</td>
+			<td><button ng-click="deletePoll(person._id)">Delete</button></td>
+
+
+
+		</tr>
+
+
+
+
+
+
+	</tbody>
+
+
+
+</table>
+
+
+

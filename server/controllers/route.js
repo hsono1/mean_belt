@@ -1,75 +1,161 @@
 var mongoose = require('mongoose');
-var Player = mongoose.model('Player');
-var Team = mongoose.model('Team');
+var User = mongoose.model('User');
+var Poll = mongoose.model('Poll');
 
 
 
 module.exports = {
 
 
-	addPlayer : function(req, res){
+	userLogin : function(req, res){
 
-		Player.create(req.body , function(err,results){
+		User.findOne(req.body, function(err, results){
 			if(err)
 			{
 				res.json(err);
 			}
 			else
 			{
-				res.json(results);
+				if( results == undefined)
+				{
+					
+					User.create(req.body, function(err, results){
+
+
+						if(err)
+						{
+							res.json(err);
+						}
+						else
+						{
+							
+							res.json(results);
+
+					}
+					
+
+
+
+					});
+
+
+				}
+				else
+				{
+					
+					
+					res.json(results);		
+
+				}
+				
 			}
+		});
+
+
+
+	},
+
+
+
+
+
+	displayAll : function(req, res){
+
+
+		User.find({}).populate('_poll').exec( function(err, results){
+			if(err)
+			{
+				res.json(err);
+			}
+			else
+			{
+				
+				res.json(results);
+
+			}
+					
+
 
 		});
 
 
 
-	}, 
+	},
 
-	addPlayerToTeam : function(req, res){
-
-
-		var team_id = req.params.id;
-		Team.findOne({_id: team_id}, function(err, results){
-		var newPlayer = new Player({first_name: req.body.fName, last_name: req.body.lName, birthdate: req.body.birthdate});
-		newPlayer._team = team._id;
+	deleteUser : function(req, res){
 
 
-		Team.update({_id: team._id}, {$push: {"_players": newPlayer}}, function(err){
-			newPlayer.save(function(err){
-			if(err){
+			User.findOne(req.body, function(err, results){
+			if(err)
+			{
 				res.json(err);
-			} else {
-				console.log("comment added");
 			}
+			else
+			{
+				
+				User.remove( req.body, function(err){
+					if(err)
+					{
+						res.json(err);
+					}
+					else
+					{
+						res.json();
+					}
+
+
+				});
+
+			}
+		
+
+
+
+
+			});
+
+
+
+
+
+
+
+
+
+
+
+
+
+	},
+
+
+
+	createPoll : function(req, res){
+
+			console.log( "req", req.body);
+
+			User.findOne({_id: req.body.user}, function(err, result){
+
+
+			var newPoll = new Poll({poll_question: req.body.question, poll_option1: req.body.option1, poll_option2: req.body.option2, poll_option3: req.body.option3, poll_option4: req.body.option4});
+			newPoll._user = req.body.user;
+
+
+			User.update({_id: req.body.user}, {"_poll": newPoll}, function(err){
+				newPoll.save(function(err){
+				if(err){
+					res.json(err);
+				} else {
+					res.json(result);
+				}
+				})
+
+
+			})
 			})
 
 
-		})
-		})
-
-
 	},
-
-
-	displayTeam : function(req, res){
-
-		Team.find({}).populate('_players').exec(function(err, results){
-			if(err)
-			{
-				res.json(err);
-			}
-			else
-			{
-				res.json(results);
-			}
-		});
-
-
-	},
-
-
-
-
 
 
 
